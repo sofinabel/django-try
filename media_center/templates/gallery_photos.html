@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ folder.name }} - School Media Center</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #B4C0EF;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background-color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .logo::before {
+            content: '';
+            width: 25px;
+            height: 25px;
+            background-color: #fff;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .logo::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background-color: #000;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .nav {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav a {
+            color: #000;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav a:hover {
+            opacity: 0.7;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px 50px;
+            background-color: #fff;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+        .gallery-viewer {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .main-photo-container {
+            position: relative;
+            background-color: #f5f5f5;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .main-photo {
+            width: 100%;
+            height: 500px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            font-size: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-arrow:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .nav-arrow.prev {
+            left: 20px;
+        }
+
+        .nav-arrow.next {
+            right: 20px;
+        }
+
+        .thumbnails {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .thumbnail {
+            min-width: 120px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+            border: 3px solid transparent;
+        }
+
+        .thumbnail:hover,
+        .thumbnail.active {
+            opacity: 1;
+            border-color: #B4C0EF;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #333;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #c8d8f0 0%, #d0d0f0 100%);
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .footer-info {
+            display: flex;
+            gap: 100px;
+        }
+
+        .footer-block h3 {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .footer-block p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+            transition: transform 0.3s;
+            font-size: 12px;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .nav {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .main-content {
+                padding: 30px 20px;
+            }
+
+            .main-photo {
+                height: 300px;
+            }
+
+            .nav-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 24px;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .footer-info {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <div class="logo"></div>
+            <span class="logo-text">School Media Center</span>
+        </div>
+        <nav class="nav">
+           <a href="{% url 'media_center:literature_levels' %}">Литература</a>
+            <a href="{% url 'media_center:video_levels' %}">Видеоуроки</a>
+            <a href="{% url 'media_center:gallery_folders' %}">Галерея</a>
+            <a href="{% url 'media_center:login' %}">Вход</a>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <a href="{% url 'media_center:gallery_folders' %}" class="back-link">← Назад к галерее</a>
+
+        <h1 class="page-title">{{ folder.name }}</h1>
+
+        {% if photos %}
+        <div class="gallery-viewer">
+            <div class="main-photo-container">
+                <img src="{{ photos.0.image_url }}" alt="{{ photos.0.title }}" class="main-photo" id="mainPhoto">
+                <button class="nav-arrow prev" onclick="changePhoto(-1)">‹</button>
+                <button class="nav-arrow next" onclick="changePhoto(1)">›</button>
+            </div>
+
+            <div class="thumbnails" id="thumbnails">
+                {% for photo in photos %}
+                <img src="{{ photo.image_url }}"
+                     alt="{{ photo.title }}"
+                     class="thumbnail {% if forloop.first %}active{% endif %}"
+                     onclick="showPhoto({{ forloop.counter0 }})">
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <p style="text-align: center; color: #888;">В этой папке пока нет фотографий</p>
+        {% endif %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-info">
+            <div class="footer-block">
+                <h3>{{ school_name }}</h3>
+                <p>{{ address }}</p>
+            </div>
+            <div class="footer-block">
+                <h3>{{ phone }}</h3>
+                <p>{{ email }}</p>
+            </div>
+        </div>
+        <div class="social-icons">
+            <a href="#" class="social-icon" title="VK">VK</a>
+            <a href="#" class="social-icon" title="Dzen">DZ</a>
+            <a href="#" class="social-icon" title="Max">MAX</a>
+        </div>
+    </footer>
+
+    <script>
+        const photos = [
+            {% for photo in photos %}
+            {
+                url: "{{ photo.image_url }}",
+                title: "{{ photo.title }}"
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+
+        let currentIndex = 0;
+
+        function showPhoto(index) {
+            currentIndex = index;
+            const mainPhoto = document.getElementById('mainPhoto');
+            mainPhoto.src = photos[index].url;
+            mainPhoto.alt = photos[index].title;
+
+            // Обновление активной миниатюры
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+        }
+
+        function changePhoto(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) {
+                currentIndex = photos.length - 1;
+            } else if (currentIndex >= photos.length) {
+                currentIndex = 0;
+            }
+            showPhoto(currentIndex);
+        }
+
+        // Поддержка клавиш стрелок
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                changePhoto(-1);
+            } else if (e.key === 'ArrowRight') {
+                changePhoto(1);
+            }
+        });
+    </script>
+</body>
+</html>

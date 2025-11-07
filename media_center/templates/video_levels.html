@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Литература - School Media Center</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #B4C0EF;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background-color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .logo::before {
+            content: '';
+            width: 25px;
+            height: 25px;
+            background-color: #fff;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .logo::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background-color: #000;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .nav {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav a {
+            color: #000;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav a:hover {
+            opacity: 0.7;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px 20px;
+            background-color: #FFFFFF;
+        }
+
+        .levels-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .levels-title {
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .level-card {
+            background-color: #D8DCE8;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-decoration: none;
+            color: #000;
+            transition: transform 0.3s, background-color 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .level-card:hover {
+            transform: translateY(-5px);
+            background-color: #C5CAD8;
+        }
+
+        .level-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .level-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .level-description {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #c8d8f0 0%, #d0d0f0 100%);
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-info {
+            display: flex;
+            gap: 100px;
+        }
+
+        .footer-block h3 {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .footer-block p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+            transition: transform 0.3s;
+            font-size: 12px;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .nav {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .levels-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .footer-info {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <div class="logo"></div>
+            <a href="{% url 'media_center:index' %}" class="logo-text">School Media Center</a>
+        </div>
+        <nav class="nav">
+            <a href="{% url 'media_center:literature_levels' %}">Литература</a>
+            <a href="{% url 'media_center:video_levels' %}">Видеоуроки</a>
+            <a href="{% url 'media_center:gallery_folders' %}">Галерея</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'media_center:logout' %}">Выход ({{ user.username }})</a>
+            {% else %}
+                <a href="{% url 'media_center:login' %}">Вход</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="levels-container">
+            <h1 class="levels-title">Выберите уровень школы</h1>
+            <div class="levels-grid">
+                <a href="{% url 'media_center:video_list' 'elementary' %}" class="level-card">
+                    <div class="level-icon">📚</div>
+                    <h2 class="level-name">Младшая школа</h2>
+                    <p class="level-description">1-4 классы. Уроки для начальной школы</p>
+                </a>
+                <a href="{% url 'media_center:video_list' 'middle' %}" class="level-card">
+                    <div class="level-icon">📖</div>
+                    <h2 class="level-name">Средняя школа</h2>
+                    <p class="level-description">5-9 классы. Уроки для средней школы</p>
+                </a>
+                <a href="{% url 'media_center:video_list' 'high' %}" class="level-card">
+                    <div class="level-icon">🎓</div>
+                    <h2 class="level-name">Старшая школа</h2>
+                    <p class="level-description">10-11 классы. Уроки для старшей школы</p>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-info">
+            <div class="footer-block">
+                <h3>{{ school_name }}</h3>
+                <p>{{ address }}</p>
+            </div>
+            <div class="footer-block">
+                <h3>{{ phone }}</h3>
+                <p>{{ email }}</p>
+            </div>
+        </div>
+        <div class="social-icons">
+            <a href="#" class="social-icon" title="VK">VK</a>
+            <a href="#" class="social-icon" title="Dzen">DZ</a>
+            <a href="#" class="social-icon" title="Max">MAX</a>
+        </div>
+    </footer>
+</body>
+</html>
