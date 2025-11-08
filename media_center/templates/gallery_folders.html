@@ -246,7 +246,11 @@
             <a href="{% url 'media_center:literature_levels' %}">Литература</a>
             <a href="{% url 'media_center:video_levels' %}">Видеоуроки</a>
             <a href="{% url 'media_center:gallery_folders' %}">Галерея</a>
-            <a href="{% url 'media_center:login' %}">Вход</a>
+            {% if is_authenticated %}
+                <a href="{% url 'media_center:logout' %}">Выход ({{ user.username }})</a>
+            {% else %}
+                <a href="{% url 'media_center:login' %}">Вход</a>
+            {% endif %}
         </nav>
     </header>
 

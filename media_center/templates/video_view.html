@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Media Center</title>
+    <title>{{ video.title }} - School Media Center</title>
     <style>
         * {
             margin: 0;
@@ -88,32 +88,75 @@
 
         .main-content {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 20px;
+            padding: 40px;
             background-color: #FFFFFF;
-            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        .main-title {
-            font-size: 38px;
-            font-weight: bold;
-            color: #a8a8d8;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        .subtitle {
-            font-size: 36px;
-            font-weight: bold;
-            color: #9090c8;
+        .back-link {
+            display: inline-block;
             margin-bottom: 20px;
+            color: #333;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .video-header {
+            margin-bottom: 30px;
+        }
+
+        .video-title {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .video-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            padding: 8px 15px;
+            background-color: #D8DCE8;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .video-container {
+            background-color: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-description {
+            background-color: #D8DCE8;
+            padding: 30px;
+            border-radius: 15px;
+            line-height: 1.8;
         }
 
         .footer {
-            background: #c8d8f0;
+            background: linear-gradient(135deg, #c8d8f0 0%, #d0d0f0 100%);
             padding: 30px 50px;
             display: flex;
             justify-content: space-between;
@@ -160,35 +203,6 @@
         .social-icon:hover {
             transform: scale(1.1);
         }
-
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 20px;
-                padding: 20px;
-            }
-
-            .nav {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-
-            .main-title, .subtitle {
-                font-size: 26px;
-            }
-
-            .footer {
-                flex-direction: column;
-                gap: 30px;
-            }
-
-            .footer-info {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-        }
     </style>
 </head>
 <body>
@@ -210,9 +224,24 @@
     </header>
 
     <main class="main-content">
-        <h1 class="main-title">Полезные материалы</h1>
-        <h2 class="subtitle">в одном месте!</h2>
-        <img src="https://cdn.culture.ru/images/591f374c-7384-5f7d-87e0-84fe11025808" width="45%">
+        <a href="{% url 'media_center:video_levels' %}" class="back-link">← Назад к видеоурокам</a>
+
+        <div class="video-header">
+            <h1 class="video-title">{{ video.title }}</h1>
+            <div class="video-meta">
+                <span class="meta-item">{{ video.group.name }}</span>
+                <span class="meta-item">Добавлено: {{ video.created_at|date:"d.m.Y" }}</span>
+            </div>
+        </div>
+
+        <div class="video-container">
+            <iframe src="{{ video.video_url }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <div class="video-description">
+            <h3 style="margin-bottom: 15px;">О видеоуроке</h3>
+            <p>Образовательный видеоматериал для учащихся {{ video.group.name }}.</p>
+        </div>
     </main>
 
     <footer class="footer">

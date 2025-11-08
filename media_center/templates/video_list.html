@@ -283,16 +283,16 @@
             <h1 class="video-title">Видеоуроки для {{ level_name }}</h1>
 
             <div class="video-grid">
-                {% for item in video %}
+                {% for item in videos %}
                 <div class="video-card">
                     <h3 class="video-name">{{ item.title }}</h3>
                     <div class="video-class">{{ item.group.name }}</div>
-                    <p class="video-description">Произведение для изучения в рамках учебной программы.</p>
-                    <a href="{{ item.file_url }}" class="download-btn" target="_blank">Скачать</a>
+                    <p class="video-description">Образовательный видеоматериал для изучения в рамках учебной программы.</p>
+                    <a href="{% url 'media_center:video_view' item.id %}" class="download-btn">Смотреть</a>
                 </div>
                 {% empty %}
                 <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                    <p style="font-size: 18px; color: #666;">Для этого уровня пока нет доступной литературы.</p>
+                    <p style="font-size: 18px; color: #666;">Для этого уровня пока нет доступных видеоуроков.</p>
                 </div>
                 {% endfor %}
             </div>
